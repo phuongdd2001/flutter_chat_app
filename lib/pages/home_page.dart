@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_chat_app/helper/helper_function.dart';
 import 'package:flutter_chat_app/pages/auth/login_page.dart';
 import 'package:flutter_chat_app/pages/profile_page.dart';
@@ -23,6 +24,10 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  bool showBackGroundImage = FirebaseRemoteConfig.instance.getBool("SHOW_BG_IMAGE");
+
+
+
 
   @override
   void initState() {
@@ -62,6 +67,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(showBackGroundImage);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -71,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(
                 Icons.search,
-              ))
+              )),
         ],
         elevation: 0,
         centerTitle: true,
@@ -105,6 +111,16 @@ class _HomePageState extends State<HomePage> {
           const Divider(
             height: 2,
           ),
+          ElevatedButton(
+              onPressed: (){}, style: ButtonStyle(
+            backgroundColor: MaterialStateColor.resolveWith((states) {
+              if(showBackGroundImage) return Colors.red;
+              return Colors.blue;
+            }),
+          ),
+            child: const Text(
+                "Groups",),
+          ),
           ListTile(
             onTap: () {},
             selectedColor: Theme.of(context).primaryColor,
@@ -113,8 +129,8 @@ class _HomePageState extends State<HomePage> {
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             leading: const Icon(Icons.group),
             title: const Text(
-              "Groups",
-              style: TextStyle(color: Colors.black),
+               "Groups",
+              style: TextStyle(color: Colors.black ),
             ),
           ),
           ListTile(
