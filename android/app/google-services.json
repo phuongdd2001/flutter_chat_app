@@ -29,6 +29,49 @@
             {
               "client_id": "7493508024-ukfummcfedasqajcakkvoo5422dtsf3a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "7493508024-dna4rq75666k55fbubrhe95qfra1pnc7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutter.chat.ap"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7493508024:android:c3e69a2f59774f90168d4d",
+        "android_client_info": {
+          "package_name": "flutter.comic.reader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7493508024-ukfummcfedasqajcakkvoo5422dtsf3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMQCgkBzyJHm7lXP2WZCF2S1j770Zo36M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7493508024-ukfummcfedasqajcakkvoo5422dtsf3a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "7493508024-dna4rq75666k55fbubrhe95qfra1pnc7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutter.chat.ap"
+              }
             }
           ]
         }

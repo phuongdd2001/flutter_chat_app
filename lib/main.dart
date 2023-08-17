@@ -1,4 +1,5 @@
 import 'package:flutter_chat_app/config/remote_config_setup.dart';
+import 'package:flutter_chat_app/firebase_options.dart';
 import 'package:flutter_chat_app/helper/helper_function.dart';
 import 'package:flutter_chat_app/pages/auth/login_page.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
@@ -20,11 +21,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-      options: FirebaseOptions(
-          apiKey: Constants.apiKey,
-          appId: Constants.appId,
-          messagingSenderId: Constants.messagingSenderId,
-          projectId: Constants.projectId));
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }
