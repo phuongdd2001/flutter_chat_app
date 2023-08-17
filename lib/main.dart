@@ -19,44 +19,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-        options: FirebaseOptions(
-            apiKey: Constants.apiKey,
-            appId: Constants.appId,
-            messagingSenderId: Constants.messagingSenderId,
-            projectId: Constants.projectId));
-  } else {
-    await Firebase.initializeApp();
-  }
-  // await MessagingConfig().initNotifications();
-
-  // await remoteConfig();
-  //
-  // print(AppUrls.showBgImage);
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: Constants.apiKey,
+          appId: Constants.appId,
+          messagingSenderId: Constants.messagingSenderId,
+          projectId: Constants.projectId));
 
   runApp(const MyApp());
 }
