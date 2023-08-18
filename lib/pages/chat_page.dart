@@ -74,7 +74,7 @@ class _ChatPageState extends State<ChatPage> {
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               width: MediaQuery.of(context).size.width,
               color: Colors.grey[700],
               child: Row(children: [
@@ -96,8 +96,8 @@ class _ChatPageState extends State<ChatPage> {
                     sendMessage();
                   },
                   child: Container(
-                    height: 50,
-                    width: 50,
+                    height: 35,
+                    width: 35,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(30),
@@ -128,8 +128,11 @@ class _ChatPageState extends State<ChatPage> {
                   return MessageTile(
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
-                      sentByMe: widget.userName ==
-                          snapshot.data.docs[index]['sender']);
+                      sentByMe: widget.userName == snapshot.data.docs[index]['sender'],
+                      totalMessage: snapshot.data.docs.length,
+                      indexMessage: index,
+
+                  );
                 },
               )
             : Container();

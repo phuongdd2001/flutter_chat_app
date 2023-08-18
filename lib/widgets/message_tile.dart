@@ -4,12 +4,17 @@ class MessageTile extends StatefulWidget {
   final String message;
   final String sender;
   final bool sentByMe;
+  final num totalMessage;
+  final num indexMessage;
 
   const MessageTile(
       {Key? key,
       required this.message,
       required this.sender,
-      required this.sentByMe})
+      required this.sentByMe,
+        required this.totalMessage,
+        required this.indexMessage,
+      })
       : super(key: key);
 
   @override
@@ -22,9 +27,10 @@ class _MessageTileState extends State<MessageTile> {
     return Container(
       padding: EdgeInsets.only(
           top: 4,
-          bottom: 4,
+          bottom: (widget.indexMessage + 1) == widget.totalMessage ? 50 : 4,
           left: widget.sentByMe ? 0 : 24,
-          right: widget.sentByMe ? 24 : 0),
+          right: widget.sentByMe ? 24 : 0
+      ),
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: widget.sentByMe

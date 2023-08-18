@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_chat_app/helper/helper_function.dart';
 import 'package:flutter_chat_app/pages/auth/login_page.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_chat_app/service/auth_service.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -20,6 +24,10 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = "";
   String fullName = "";
   AuthService authService = AuthService();
+  File? file;
+  ImagePicker image = ImagePicker();
+  var urlAvatar;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +55,43 @@ class _RegisterPageState extends State<RegisterPage> {
                             "Create your account now to chat and explore",
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w400)),
-                        Image.asset("assets/register.png"),
+                        // Image.asset("assets/register.png"),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Container(
+                                width: 200,
+                                height: 200,
+                                child: file == null
+                                    ? IconButton(
+                                        onPressed: () {
+                                          getImage();
+                                        },
+                                        icon: const Icon(
+                                          Icons.add_a_photo,
+                                          size: 90,
+                                          color: Color.fromARGB(255, 0, 0, 0),
+                                        ),
+                                      )
+                                    : MaterialButton(
+                                        height: 100,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.file(
+                                            file!,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          getImage();
+                                        },
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
                               labelText: "Full Name",
@@ -167,14 +211,27 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _isLoading = true;
       });
+
+
+
       await authService
           .registerUserWithEmailandPassword(fullName, email, password)
           .then((value) async {
+
+        var imageFile = FirebaseStorage.instance.ref().child('avatar-user').child("/${fullName}_avatar");
+        UploadTask task = imageFile.putFile(file!);
+        TaskSnapshot snapshot = await task;
+        urlAvatar = await snapshot.ref.getDownloadURL();
+        setState(() {
+          urlAvatar = urlAvatar;
+        });
+
         if (value == true) {
           // saving the shared preference state
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(fullName);
+          await HelperFunctions.sa
           nextScreenReplace(context, const HomePage());
         } else {
           showSnackbar(context, Colors.red, value);
@@ -184,5 +241,12 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       });
     }
+  }
+
+  getImage() async {
+    var img = await image.pickImage(source: ImageSource.gallery);
+    setState(() {
+      file = File(img!.path);
+    });
   }
 }

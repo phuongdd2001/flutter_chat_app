@@ -24,10 +24,6 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
-  bool showBackGroundImage = FirebaseRemoteConfig.instance.getBool("SHOW_BG_IMAGE");
-
-
-
 
   @override
   void initState() {
@@ -67,7 +63,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(showBackGroundImage);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -110,16 +105,6 @@ class _HomePageState extends State<HomePage> {
           ),
           const Divider(
             height: 2,
-          ),
-          ElevatedButton(
-              onPressed: (){}, style: ButtonStyle(
-            backgroundColor: MaterialStateColor.resolveWith((states) {
-              if(showBackGroundImage) return Colors.red;
-              return Colors.blue;
-            }),
-          ),
-            child: const Text(
-                "Groups",),
           ),
           ListTile(
             onTap: () {},
