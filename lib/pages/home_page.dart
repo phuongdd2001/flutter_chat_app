@@ -24,11 +24,13 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  String userAvatar = "";
 
   @override
   void initState() {
     super.initState();
     gettingUserData();
+    getCurrentUserAvatar();
   }
 
   // string manipulation
@@ -51,12 +53,21 @@ class _HomePageState extends State<HomePage> {
         userName = val!;
       });
     });
+
     // getting the list of snapshots in our stream
     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
         .getUserGroups()
         .then((snapshot) {
       setState(() {
         groups = snapshot;
+      });
+    });
+  }
+
+  getCurrentUserAvatar() async {
+    await HelperFunctions.getUserAvatarFromSF().then((value) {
+      setState(() {
+        userAvatar = value!;
       });
     });
   }
@@ -87,6 +98,16 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 50),
         children: <Widget>[
+          userAvatar != "" ?
+          ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+            child: Image.network(
+                userAvatar,
+                width: 150,
+                height: 150,
+
+            ),
+          ) :
           Icon(
             Icons.account_circle,
             size: 150,
@@ -125,6 +146,7 @@ class _HomePageState extends State<HomePage> {
                   ProfilePage(
                     userName: userName,
                     email: email,
+                      userAvatar: userAvatar,
                   ));
             },
             contentPadding:
@@ -291,7 +313,10 @@ class _HomePageState extends State<HomePage> {
                   return GroupTile(
                       groupId: getId(snapshot.data['groups'][reverseIndex]),
                       groupName: getName(snapshot.data['groups'][reverseIndex]),
-                      userName: snapshot.data['fullName']);
+                      userName: snapshot.data['fullName'],
+                      userAvatar: snapshot.data['userAvatar']
+                      );
+
                 },
               );
             } else {

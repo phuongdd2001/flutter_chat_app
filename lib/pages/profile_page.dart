@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 class ProfilePage extends StatefulWidget {
   String userName;
   String email;
-  ProfilePage({Key? key, required this.email, required this.userName})
+  String userAvatar;
+  ProfilePage({Key? key, required this.email, required this.userName,  this.userAvatar = ""})
       : super(key: key);
 
   @override
@@ -32,11 +33,20 @@ class _ProfilePageState extends State<ProfilePage> {
           child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 50),
         children: <Widget>[
-          Icon(
+          widget.userAvatar != "" ?  ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: Image.network(
+              widget.userAvatar,
+              width: 150,
+              height: 150,
+
+            ),
+          ) : Icon(
             Icons.account_circle,
             size: 150,
             color: Colors.grey[700],
           ),
+
           const SizedBox(
             height: 15,
           ),
@@ -126,11 +136,19 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(
-              Icons.account_circle,
-              size: 200,
-              color: Colors.grey[700],
-            ),
+        widget.userAvatar != "" ?  ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+        child: Image.network(
+          widget.userAvatar,
+          width: 200,
+          height: 200,
+
+        ),
+      ) : Icon(
+      Icons.account_circle,
+      size: 200,
+      color: Colors.grey[700],
+    ),
             const SizedBox(
               height: 15,
             ),

@@ -11,10 +11,11 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("groups");
 
   // saving the userdata
-  Future savingUserData(String fullName, String email) async {
+  Future savingUserData(String fullName, String email, String userAvatar) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "email": email,
+      "userAvatar": userAvatar,
       "groups": [],
       "profilePic": "",
       "uid": uid,

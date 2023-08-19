@@ -19,6 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
   String userName = "";
+  String userAvatar = "";
   bool isJoined = false;
   User? user;
 
@@ -26,6 +27,7 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     getCurrentUserIdandName();
+    // getCurrentUserAvatar();
   }
 
   getCurrentUserIdandName() async {
@@ -35,6 +37,14 @@ class _SearchPageState extends State<SearchPage> {
       });
     });
     user = FirebaseAuth.instance.currentUser;
+  }
+
+  getCurrentUserAvatar() async {
+    await HelperFunctions.getUserAvatarFromSF().then((value) {
+      setState(() {
+        userAvatar = value!;
+      });
+    });
   }
 
   String getName(String r) {
@@ -182,7 +192,9 @@ class _SearchPageState extends State<SearchPage> {
                   ChatPage(
                       groupId: groupId,
                       groupName: groupName,
-                      userName: userName));
+                      userName: userName,
+                      userAvatar: userAvatar
+                  ));
             });
           } else {
             setState(() {

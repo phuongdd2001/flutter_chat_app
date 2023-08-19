@@ -26,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   AuthService authService = AuthService();
   File? file;
   ImagePicker image = ImagePicker();
-  var urlAvatar;
+  String urlAvatar = "";
 
   @override
   Widget build(BuildContext context) {
@@ -212,26 +212,30 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
 
-
-
-      await authService
-          .registerUserWithEmailandPassword(fullName, email, password)
-          .then((value) async {
-
-        var imageFile = FirebaseStorage.instance.ref().child('avatar-user').child("/${fullName}_avatar");
+      if(file != null) {
+        var imageFile = FirebaseStorage.instance
+            .ref()
+            .child('avatar-user')
+            .child("/${fullName}_avatar");
         UploadTask task = imageFile.putFile(file!);
         TaskSnapshot snapshot = await task;
         urlAvatar = await snapshot.ref.getDownloadURL();
         setState(() {
           urlAvatar = urlAvatar;
         });
+      }
 
+
+      await authService
+          .registerUserWithEmailandPassword(
+              fullName, email, password, urlAvatar)
+          .then((value) async {
         if (value == true) {
           // saving the shared preference state
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(fullName);
-          await HelperFunctions.sa
+          await HelperFunctions.saveUserAvatarSF(urlAvatar);
           nextScreenReplace(context, const HomePage());
         } else {
           showSnackbar(context, Colors.red, value);

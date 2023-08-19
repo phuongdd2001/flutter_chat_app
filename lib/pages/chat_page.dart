@@ -9,11 +9,14 @@ class ChatPage extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String userName;
+ final String userAvatar;
   const ChatPage(
       {Key? key,
       required this.groupId,
       required this.groupName,
-      required this.userName})
+      required this.userName,
+       required this.userAvatar,
+      })
       : super(key: key);
 
   @override
@@ -122,19 +125,29 @@ class _ChatPageState extends State<ChatPage> {
       stream: chats,
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
-            ? ListView.builder(
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) {
-                  return MessageTile(
-                      message: snapshot.data.docs[index]['message'],
-                      sender: snapshot.data.docs[index]['sender'],
-                      sentByMe: widget.userName == snapshot.data.docs[index]['sender'],
-                      totalMessage: snapshot.data.docs.length,
-                      indexMessage: index,
+            ?
+        new Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/image_bgr.jpg"),
+                  fit: BoxFit.cover)
+          ),
+          child: ListView.builder(
 
-                  );
-                },
-              )
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (context, index) {
+              return MessageTile(
+                message: snapshot.data.docs[index]['message'],
+                sender: snapshot.data.docs[index]['sender'],
+                userAvatar: snapshot.data.docs[index]['userAvatar'],
+                sentByMe: widget.userName == snapshot.data.docs[index]['sender'],
+                totalMessage: snapshot.data.docs.length,
+                indexMessage: index,
+
+              );
+            },
+          ),
+        )
             : Container();
       },
     );
@@ -145,6 +158,7 @@ class _ChatPageState extends State<ChatPage> {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
         "sender": widget.userName,
+        "userAvatar": widget.userAvatar,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
 
