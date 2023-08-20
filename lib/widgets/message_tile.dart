@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/consts/const.dart';
 
 class MessageTile extends StatefulWidget {
   final String message;
@@ -42,10 +43,18 @@ class _MessageTileState extends State<MessageTile> {
                 ? CircleAvatar(
               backgroundImage: NetworkImage(widget.userAvatar),
             )
-                : Icon(
-              Icons.account_circle,
-              size: 45,
-              color: Colors.grey[700],
+                : CircleAvatar(
+              radius: 20,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Text(
+                getName(widget.sender)
+                    .substring(0, 1)
+                    .toUpperCase(),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(
               width: 10,
@@ -112,20 +121,28 @@ class _MessageTileState extends State<MessageTile> {
               ),
             ),
           ),
-          if (widget.sentByMe) ...[
-            SizedBox(
-              width: 10,
-            ),
-            widget.userAvatar != ''
-                ? CircleAvatar(
-                    backgroundImage: NetworkImage(widget.userAvatar),
-                  )
-                : Icon(
-                    Icons.account_circle,
-                    size: 45,
-                    color: Colors.grey[700],
-                  ),
-          ],
+          // if (widget.sentByMe) ...[
+          //   SizedBox(
+          //     width: 10,
+          //   ),
+          //   widget.userAvatar != ''
+          //       ? CircleAvatar(
+          //           backgroundImage: NetworkImage(widget.userAvatar),
+          //         )
+          //       : CircleAvatar(
+          //     radius: 20,
+          //     backgroundColor: Theme.of(context).primaryColor,
+          //     child: Text(
+          //       getName(widget.sender)
+          //           .substring(0, 1)
+          //           .toUpperCase(),
+          //       style: const TextStyle(
+          //           color: Colors.white,
+          //           fontSize: 15,
+          //           fontWeight: FontWeight.bold),
+          //     ),
+          //   ),
+          // ],
         ],
       ),
     );

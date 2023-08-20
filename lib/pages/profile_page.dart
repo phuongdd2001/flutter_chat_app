@@ -33,14 +33,10 @@ class _ProfilePageState extends State<ProfilePage> {
           child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 50),
         children: <Widget>[
-          widget.userAvatar != "" ?  ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.network(
-              widget.userAvatar,
-              width: 150,
-              height: 150,
-
-            ),
+          widget.userAvatar != "" ?  CircleAvatar(
+            backgroundImage: NetworkImage( widget.userAvatar),
+            minRadius: 50,
+            maxRadius: 100,
           ) : Icon(
             Icons.account_circle,
             size: 150,
@@ -136,15 +132,12 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-        widget.userAvatar != "" ?  ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-        child: Image.network(
-          widget.userAvatar,
-          width: 200,
-          height: 200,
-
-        ),
-      ) : Icon(
+        widget.userAvatar != "" ? CircleAvatar(
+          backgroundImage: NetworkImage( widget.userAvatar),
+          minRadius: 50,
+          maxRadius: 100,
+        )
+         : Icon(
       Icons.account_circle,
       size: 200,
       color: Colors.grey[700],

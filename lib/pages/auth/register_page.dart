@@ -76,13 +76,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                       )
                                     : MaterialButton(
                                         height: 100,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: Image.file(
-                                            file!,
-                                            fit: BoxFit.fill,
-                                          ),
+                                        child: CircleAvatar(
+                                          backgroundImage: FileImage( file!),
+                                          minRadius: 50,
+                                          maxRadius: 100,
                                         ),
                                         onPressed: () {
                                           getImage();

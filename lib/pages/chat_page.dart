@@ -124,10 +124,11 @@ class _ChatPageState extends State<ChatPage> {
     return StreamBuilder(
       stream: chats,
       builder: (context, AsyncSnapshot snapshot) {
+
         return snapshot.hasData
             ?
-        new Container(
-          decoration: BoxDecoration(
+         Container(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/image_bgr.jpg"),
                   fit: BoxFit.cover)

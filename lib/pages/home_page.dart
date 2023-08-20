@@ -99,14 +99,10 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.symmetric(vertical: 50),
         children: <Widget>[
           userAvatar != "" ?
-          ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-            child: Image.network(
-                userAvatar,
-                width: 150,
-                height: 150,
-
-            ),
+          CircleAvatar(
+            backgroundImage: NetworkImage( userAvatar),
+            minRadius: 50,
+            maxRadius: 100,
           ) :
           Icon(
             Icons.account_circle,
@@ -302,6 +298,7 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder(
       stream: groups,
       builder: (context, AsyncSnapshot snapshot) {
+
         // make some checks
         if (snapshot.hasData) {
           if (snapshot.data['groups'] != null) {
@@ -314,7 +311,7 @@ class _HomePageState extends State<HomePage> {
                       groupId: getId(snapshot.data['groups'][reverseIndex]),
                       groupName: getName(snapshot.data['groups'][reverseIndex]),
                       userName: snapshot.data['fullName'],
-                      userAvatar: snapshot.data['userAvatar']
+                      userAvatar: snapshot.data['userAvatar'],
                       );
 
                 },

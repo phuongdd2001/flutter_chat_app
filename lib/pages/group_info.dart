@@ -12,8 +12,10 @@ class GroupInfo extends StatefulWidget {
       {Key? key,
       required this.adminName,
       required this.groupName,
-      required this.groupId})
+      required this.groupId,
+      })
       : super(key: key);
+
 
   @override
   State<GroupInfo> createState() => _GroupInfoState();
@@ -21,6 +23,7 @@ class GroupInfo extends StatefulWidget {
 
 class _GroupInfoState extends State<GroupInfo> {
   Stream? members;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     getMembers();
@@ -48,6 +51,7 @@ class _GroupInfoState extends State<GroupInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
@@ -99,50 +103,50 @@ class _GroupInfoState extends State<GroupInfo> {
               icon: const Icon(Icons.exit_to_app))
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Theme.of(context).primaryColor.withOpacity(0.2)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      widget.groupName.substring(0, 1).toUpperCase(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
+      body:  Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: ListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: Text(
+                        widget.groupName.substring(0, 1).toUpperCase(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500, color: Colors.white),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Group: ${widget.groupName}",
-                        style: const TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text("Admin: ${getName(widget.adminName)}")
-                    ],
-                  )
-                ],
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Group: ${widget.groupName}",
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text("Admin: ${getName(widget.adminName)}")
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            memberList(),
-          ],
+              memberList(),
+            ],
+          ),
         ),
-      ),
     );
   }
 
@@ -156,6 +160,7 @@ class _GroupInfoState extends State<GroupInfo> {
               return ListView.builder(
                 itemCount: snapshot.data['members'].length,
                 shrinkWrap: true,
+                controller: _scrollController,
                 itemBuilder: (context, index) {
                   return Container(
                     padding:
