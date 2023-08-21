@@ -259,7 +259,7 @@ class _RegisterPageState extends State<RegisterPage> {
       var status = await Permission.photos.status;
       if (status.isDenied) {
         print('Access Denied');
-        showAlertDialog(context);
+        // showAlertDialog(context);
       } else {
         print('Exception occured!');
       }

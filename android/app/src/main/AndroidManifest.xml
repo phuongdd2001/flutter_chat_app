@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.flutter_chat_app">
     <application
-        android:label="flutter_chat_app"
+        android:label="Groups Chat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
