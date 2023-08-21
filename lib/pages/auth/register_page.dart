@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_app/helper/helper_function.dart';
 import 'package:flutter_chat_app/pages/auth/login_page.dart';
 import 'package:flutter_chat_app/pages/home_page.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_chat_app/widgets/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -77,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     : MaterialButton(
                                         height: 100,
                                         child: CircleAvatar(
-                                          backgroundImage: FileImage( file!),
+                                          backgroundImage: FileImage(file!),
                                           minRadius: 50,
                                           maxRadius: 100,
                                         ),
@@ -209,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
 
-      if(file != null) {
+      if (file != null) {
         var imageFile = FirebaseStorage.instance
             .ref()
             .child('avatar-user')
@@ -221,7 +223,6 @@ class _RegisterPageState extends State<RegisterPage> {
           urlAvatar = urlAvatar;
         });
       }
-
 
       await authService
           .registerUserWithEmailandPassword(
@@ -245,9 +246,43 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   getImage() async {
-    var img = await image.pickImage(source: ImageSource.gallery);
-    setState(() {
-      file = File(img!.path);
-    });
+    try {
+      XFile? img = await image.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1800,
+        maxHeight: 1800,
+      );
+      setState(() {
+        file = File(img!.path);
+      });
+    } catch (e) {
+      var status = await Permission.photos.status;
+      if (status.isDenied) {
+        print('Access Denied');
+        showAlertDialog(context);
+      } else {
+        print('Exception occured!');
+      }
+    }
   }
+
+  showAlertDialog(context) => showCupertinoDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('Permission Denied'),
+          content: const Text('Allow access to gallery and photos'),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () => openAppSettings(),
+              child: const Text('Settings'),
+            ),
+          ],
+        ),
+      );
 }
