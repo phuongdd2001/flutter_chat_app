@@ -1,4 +1,3 @@
-import 'package:flutter_chat_app/config/remote_config_setup.dart';
 import 'package:flutter_chat_app/firebase_options.dart';
 import 'package:flutter_chat_app/helper/helper_function.dart';
 import 'package:flutter_chat_app/pages/auth/login_page.dart';
